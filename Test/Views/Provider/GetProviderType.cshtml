@@ -1,0 +1,39 @@
+﻿@model ResponseModel<IList<ProviderTypeResponseModel>>
+<div class="container">
+    <h2>Update Provider type</h2>
+
+    <div class="form-group">
+        <label for="provider_type_id">Id:</label>
+        <input type="text" class="form-control" id="provider_type_id" value="@ViewBag.ProviderType.Data.Id" name="provider_type_id" readonly />
+        <br />
+        <label for="provider_type_name">Name:</label>
+        <input type="text" class="form-control" id="provider_type_name" value="@ViewBag.ProviderType.Data.Name" name="provider_type_name">
+    </div>
+    <button type="submit" onclick="updateProviderType()" class="btn btn-default btn btn-primary">Update</button>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Provider Type Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model is not null && Model.Data is not null)
+                @foreach (var providerType in Model.Data)
+                {
+                    <tr>
+                        <td>@providerType.Id</td>
+                        <td>@providerType.Name</td>
+                        <td>
+                            <a asp-controller="Provider" asp-action="DeleteProviderType" asp-route-providerTypeId="@providerType.Id">Delete</a> /
+                            <a asp-controller="Provider" asp-action="GetProviderType" asp-route-providerTypeId="@providerType.Id">Edit</a>
+                        </td>
+                    </tr>
+
+                }
+        </tbody>
+    </table>
+</div> 
+<script src="~/js/provider.js"></script>
