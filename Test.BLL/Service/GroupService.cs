@@ -63,7 +63,7 @@ namespace Test.BLL.Service
                     };
                 }
 
-                ResponseModel<bool> response = await repository.DeleteGroupAsync(GroupId);
+                ResponseModel<bool> response = await repository.DeleteGroupTypeAsync(GroupId);
 
                 return response;
             }

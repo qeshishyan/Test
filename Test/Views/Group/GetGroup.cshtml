@@ -1,0 +1,55 @@
+﻿@model ResponseModel<IList<GroupResponseModel>>
+<div class="container">
+    <h2>Update Group type</h2>
+
+    @if (ViewBag.Group.Data is not null)
+    {
+        <div class="form-group">
+            <label for="group_id">Id:</label>
+            <input type="text" class="form-control" id="group_id" value="@ViewBag.Group.Data.Id" name="group_id" readonly />
+            <br />
+            <label for="group_name">Name:</label>
+            <input type="text" class="form-control" id="group_name" value="@ViewBag.Group.Data.Name" name="group_name">
+
+            <br />
+            <select id="group_type_id" name="GroupTypeId" class="form-select" aria-label="Default select example">
+                <option value="@ViewBag.Group.Data.GroupType.Id" selected>@ViewBag.Group.Data.GroupType.Name</option>
+                @if (ViewBag.GroupTypes.Data is not null)
+                {
+                    @foreach (var groupType in ViewBag.GroupTypes.Data)
+                    {
+                        <option value="@groupType.Id">@groupType.Name</option>
+                    }
+                }
+            </select>
+        </div>
+    }
+
+    <button type="submit" onclick="updateGroup()" class="btn btn-default btn btn-primary">Update</button>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Provider Type Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model is not null && Model.Data is not null)
+                @foreach (var group in Model.Data)
+                {
+                    <tr>
+                        <td>@group.Id</td>
+                        <td>@group.Name</td>
+                        <td>
+                            <a style="text-decoration: underline; cursor:pointer;" onclick="deleteGroup(@group.Id)">Delete</a> /
+                            <a asp-controller="Group" asp-action="GetGroup" asp-route-groupId="@group.Id">Edit</a>
+                        </td>
+                    </tr>
+
+                }
+        </tbody>
+    </table>
+</div>
+<script src="~/js/group.js"></script>

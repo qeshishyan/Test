@@ -1,0 +1,36 @@
+﻿@model ResponseModel<IList<GroupTypeResponseModel>>
+<div class="container">
+    <h2>Group types</h2>
+
+    <div class="form-group">
+        <label for="group_type_name">Name:</label>
+        <input type="text" class="form-control" id="group_type_name" placeholder="Group type name" name="group_type_name">
+    </div>
+    <button type="submit" onclick="addGroupType()" class="btn btn-default btn btn-primary">Add</button>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Group Type Name</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model is not null && Model.Data is not null)
+                @foreach (var groupType in Model.Data)
+                {
+                    <tr>
+                        <td>@groupType.Id</td>
+                        <td>@groupType.Name</td>
+                        <td>
+                            <a style="text-decoration: underline; cursor:pointer;" onclick="deleteGroupType(@groupType.Id)">Delete</a> /
+                            <a asp-controller="Group" asp-action="GetGroupType" asp-route-groupTypeId="@groupType.Id">Edit</a>
+                        </td>
+                    </tr>
+
+                }
+        </tbody>
+    </table>
+</div>
+<script src="~/js/group.js"></script>

@@ -25,7 +25,7 @@
                             <td>@providerType.Id</td>
                             <td>@providerType.Name</td>
                             <td>
-                                <a asp-controller="Provider" asp-action="DeleteProviderType" asp-route-providerTypeId="@providerType.Id">Delete</a> /
+                                <a style="text-decoration: underline; cursor:pointer;" onclick="deleteProviderType(@providerType.Id)">Delete</a> /
                                 <a asp-controller="Provider" asp-action="GetProviderType" asp-route-providerTypeId="@providerType.Id">Edit</a>
                             </td>
                         </tr>

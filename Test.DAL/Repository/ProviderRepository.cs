@@ -11,6 +11,7 @@ using Test.DomainModels;
 using Test.DomainModels.Provider;
 using Test.CustomModels.Provider;
 using Test.CustomModels.Group;
+using Test.CustomModels.GroupType;
 
 namespace Test.DAL.Repository
 {
@@ -230,7 +231,9 @@ namespace Test.DAL.Repository
             {
                 Providers Provider = new Providers
                 {
-                    Name = requestModel.Name
+                    Name = requestModel.Name,
+                    ProviderTypeId = requestModel.ProviderTypeId,
+                    GroupId = requestModel.GroupId
                 };
 
                 await dbContext.Providers.AddAsync(Provider);
@@ -314,11 +317,29 @@ namespace Test.DAL.Repository
             try
             {
                 ProviderResponseModel result = await dbContext.Providers
+                      .Include(x=> x.Groups)
+                          .ThenInclude(x=> x.GroupTypes)
+                      .Include(x=> x.ProviderTypes)
                       .Where(x => x.Id == providerId)
                       .Select(x => new ProviderResponseModel
                       {
                           Id = x.Id,
-                          Name = x.Name
+                          Name = x.Name,
+                          Group = new GroupResponseModel
+                          {
+                              Name = x.Groups.Name,
+                              Id = x.Groups.Id,
+                              GroupType = new GroupTypeResponseModel
+                              {
+                                  Id = x.Groups.GroupTypes.Id,
+                                  Name = x.Groups.GroupTypes.Name
+                              }
+                          },
+                          ProviderType = new ProviderTypeResponseModel
+                          {
+                              Id = x.ProviderTypes.Id,
+                              Name = x.ProviderTypes.Name
+                          }
 
                       }).FirstOrDefaultAsync();
 
@@ -396,7 +417,9 @@ namespace Test.DAL.Repository
                 Providers Provider = new Providers
                 {
                     Name = updateModel.Name,
-                    Id = updateModel.Id
+                    Id = updateModel.Id,
+                    ProviderTypeId = updateModel.ProviderTypeId,
+                    GroupId = updateModel.GroupId
                 };
 
                 dbContext.Providers.Update(Provider);

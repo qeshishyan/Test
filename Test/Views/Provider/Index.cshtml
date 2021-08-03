@@ -1,44 +1,43 @@
 ﻿@model ResponseModel<IList<ProviderResponseModel>>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Providers</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-</head>
 <body>
-
     <div class="container">
-        <h2>Providers</h2> 
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Id</th>
-                    <th>Provider name</th>
-                    <th>Provider Type</th>
-                    <th>Group</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var provider in Model.Data)
-                {
+        <h2>Providers</h2>
+        @if (Model.Data.Count == 0 || Model.Data is null)
+        { 
+            <h3 style="text-align: center">No providers</h3>
+        }
+        else
+        {
+            <table class="table table-striped">
+                <thead>
                     <tr>
-                        <td>@provider.Id</td>
-                        <td>@provider.Name</td>
-                        <td>@provider.ProviderType.Name</td>
-                        <td>@provider.Group.Name</td>
-                        <td><a onclick="deleteProviderType(@provider.Id)">Delete</a> / 
-                            <a asp-controller="Provider" asp-action="GetProvider" asp-route-providerId="@provider.Id">Edit</a></td> 
-                    </tr> 
-                } 
-            </tbody>
-        </table>
-    </div>
+                        <th>Id</th>
+                        <th>Provider Name</th>
+                        <th>Provider Type</th>
+                        <th>Group</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var provider in Model.Data)
+                    {
+                        <tr>
+                            <td>@provider.Id</td>
+                            <td>@provider.Name</td>
+                            <td>@provider.ProviderType.Name</td>
+                            <td>@provider.Group.Name</td>
+                            <td>
+                                <a style="text-decoration: underline; cursor:pointer;" onclick="deleteProvider(@provider.Id)">Delete</a> /
+                                <a asp-controller="Provider" asp-action="GetProvider" asp-route-providerId="@provider.Id">Edit</a>
+                            </td>
+                        </tr>
 
+                    }
+                </tbody>
+            </table>
+        }
+
+    </div>
 </body>
-</html>
+<script src="~/js/provider.js"></script>

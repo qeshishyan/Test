@@ -25,18 +25,32 @@ namespace Test.Controllers
 
             return View(groups);
         }
-        
+
         [HttpGet]
         public async Task<IActionResult> GetGroup(int groupId)
         {
-            ResponseModel<GroupResponseModel> group = await service.GetGroupByIdAsync(groupId);
+            ResponseModel<IList<GroupResponseModel>> group = await service.GetAllGroupsAsync();
+
+            ViewBag.Group = await service.GetGroupByIdAsync(groupId);
+
+            ViewBag.GroupTypes = await service.GetAllGroupTypesAsync();
 
             if (group.Status == 1)
             {
                 return View(group);
             }
 
-            return Redirect("/Error"); 
+            return Redirect("/Error");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> CreateGroup()
+        {
+            ResponseModel<IList<GroupTypeResponseModel>> groupTypes = await service.GetAllGroupTypesAsync();
+
+            ViewBag.Groups = await service.GetAllGroupsAsync();
+
+            return View(groupTypes);
         }
 
         [HttpPost]
@@ -44,15 +58,10 @@ namespace Test.Controllers
         {
             ResponseModel<GroupResponseModel> group = await service.CreateGroupAsync(requestModel);
 
-            if(group.Status == 1)
-            {
-                return Ok(group);
-            }
-
-            return BadRequest(group);
+            return Redirect("CreateGroup");
         }
 
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> UpdateGroup(GroupUpdateModel updateModel)
         {
             ResponseModel<GroupResponseModel> groups = await service.UpdateGroupAsync(updateModel);
@@ -71,54 +80,61 @@ namespace Test.Controllers
         {
             ResponseModel<bool> groups = await service.DeleteGroupAsync(groupId);
 
-            if (groups.Status == 1)
-            {
-                return Ok(groups);
-            }
-
-            return BadRequest(groups);
+            return Ok();
         }
         #endregion
 
-        #region GroupType
+        #region groupType
         [HttpGet]
         public async Task<IActionResult> GetGroupTypes()
         {
-            ResponseModel<IList<GroupTypeResponseModel>> GroupTypes = await service.GetAllGroupTypesAsync();
+            ResponseModel<IList<GroupTypeResponseModel>> groupTypes = await service.GetAllGroupTypesAsync();
 
-            return View(GroupTypes);
+            return View(groupTypes);
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetGroupType(int GroupTypeId)
+        public async Task<IActionResult> GetGroupType(int groupTypeId)
         {
-            ResponseModel<GroupTypeResponseModel> GroupType = await service.GetGroupTypeByIdAsync(GroupTypeId);
+            ResponseModel<GroupTypeResponseModel> groupType = await service.GetGroupTypeByIdAsync(groupTypeId);
 
-            return View(GroupType);
+            ViewBag.GroupType = groupType;
+
+            ResponseModel<IList<GroupTypeResponseModel>> groupTypes = await service.GetAllGroupTypesAsync();
+
+            return View(groupTypes);
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateGroupType(GroupTypeRequestModel requestModel)
         {
-            ResponseModel<GroupTypeResponseModel> GroupType = await service.CreateGroupTypeAsync(requestModel);
+            ResponseModel<GroupTypeResponseModel> groupType = await service.CreateGroupTypeAsync(requestModel);
 
-            return View(GroupType);
+            return View();
         }
 
-        [HttpPut]
+        [HttpGet]
+        public async Task<IActionResult> CreateGroupType()
+        {
+            ResponseModel<IList<GroupTypeResponseModel>> groupTypes = await service.GetAllGroupTypesAsync();
+
+            return View(groupTypes);
+        }
+
+        [HttpPost]
         public async Task<IActionResult> UpdateGroupType(GroupTypeUpdateModel updateModel)
         {
-            ResponseModel<GroupTypeResponseModel> GroupTypes = await service.UpdateGroupTypeAsync(updateModel);
+            ResponseModel<GroupTypeResponseModel> groupTypes = await service.UpdateGroupTypeAsync(updateModel);
 
-            return View(GroupTypes);
+            return Ok();
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteGroupType(int GroupTypeId)
+        public async Task<IActionResult> DeleteGroupType(int groupTypeId)
         {
-            ResponseModel<bool> GroupTypes = await service.DeleteGroupTypeAsync(GroupTypeId);
+            ResponseModel<bool> groupTypes = await service.DeleteGroupTypeAsync(groupTypeId);
 
-            return View(GroupTypes);
+            return Ok();
         }
         #endregion
     }

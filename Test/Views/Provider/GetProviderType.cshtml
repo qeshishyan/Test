@@ -2,13 +2,17 @@
 <div class="container">
     <h2>Update Provider type</h2>
 
-    <div class="form-group">
-        <label for="provider_type_id">Id:</label>
-        <input type="text" class="form-control" id="provider_type_id" value="@ViewBag.ProviderType.Data.Id" name="provider_type_id" readonly />
-        <br />
-        <label for="provider_type_name">Name:</label>
-        <input type="text" class="form-control" id="provider_type_name" value="@ViewBag.ProviderType.Data.Name" name="provider_type_name">
-    </div>
+    @if (ViewBag.ProviderType.Data is not null)
+    {
+        <div class="form-group">
+            <label for="provider_type_id">Id:</label>
+            <input type="text" class="form-control" id="provider_type_id" value="@ViewBag.ProviderType.Data.Id" name="provider_type_id" readonly />
+            <br />
+            <label for="provider_type_name">Name:</label>
+            <input type="text" class="form-control" id="provider_type_name" value="@ViewBag.ProviderType.Data.Name" name="provider_type_name">
+        </div>
+    }
+
     <button type="submit" onclick="updateProviderType()" class="btn btn-default btn btn-primary">Update</button>
 
     <table class="table table-striped">
@@ -27,7 +31,7 @@
                         <td>@providerType.Id</td>
                         <td>@providerType.Name</td>
                         <td>
-                            <a asp-controller="Provider" asp-action="DeleteProviderType" asp-route-providerTypeId="@providerType.Id">Delete</a> /
+                            <a style="text-decoration: underline; cursor:pointer;" onclick="deleteProviderType(@providerType.Id)">Delete</a> /
                             <a asp-controller="Provider" asp-action="GetProviderType" asp-route-providerTypeId="@providerType.Id">Edit</a>
                         </td>
                     </tr>
@@ -35,5 +39,5 @@
                 }
         </tbody>
     </table>
-</div> 
+</div>
 <script src="~/js/provider.js"></script>

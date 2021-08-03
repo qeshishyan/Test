@@ -1,0 +1,55 @@
+﻿@model ResponseModel<IList<GroupTypeResponseModel>>
+<body>
+    <div class="container">
+        <h2>Add group</h2>
+        <form asp-controller="Group" asp-action="CreateGroup" method="post">
+            <div>
+                <a asp-controller="Group" asp-action="CreateGroupType">Add group type</a>
+                <br />
+                <select name="GroupTypeId" class="form-select" aria-label="Default select example">
+                    <option value="0" selected>Select group type</option>
+                    @if (Model.Data is not null)
+                    {
+                        @foreach (var groupType in Model.Data)
+                        {
+                            <option id="group_type_id" value="@groupType.Id">@groupType.Name</option>
+                        }
+                    }
+                </select>
+            </div>
+            <br />
+            <div class="form-group">
+                <label for="group_name">Name:</label>
+                <input type="text" class="form-control" id="group_name" placeholder="Group name" name="Name">
+            </div>
+            <button type="submit" class="btn btn-default btn-primary">Add</button>
+        </form>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Provider Type Name</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (ViewBag.Groups is not null && ViewBag.Groups.Data is not null)
+                    @foreach (var group in ViewBag.Groups.Data)
+                    {
+                        <tr>
+                            <td>@group.Id</td>
+                            <td>@group.Name</td>
+                            <td>
+                                <a style="text-decoration: underline; cursor:pointer;" onclick="deleteGroup(@group.Id)">Delete</a> /
+                                <a asp-controller="Group" asp-action="GetGroup" asp-route-groupId="@group.Id">Edit</a>
+                            </td>
+                        </tr>
+
+                    }
+            </tbody>
+        </table>
+    </div>
+</body>
+
+<script src="~/js/group.js"></script>

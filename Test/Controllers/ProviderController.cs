@@ -23,18 +23,22 @@ namespace Test.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            ResponseModel<IList<ProviderResponseModel>> Providers = await service.GetAllProvidersAsync();
+            ResponseModel<IList<ProviderResponseModel>> providers = await service.GetAllProvidersAsync();
 
-            return View(Providers);
+            return View(providers);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetProvider(int providerId)
         {
-            ResponseModel<ProviderResponseModel> Provider = await service.GetProviderByIdAsync(providerId);
+            ResponseModel<ProviderResponseModel> provider = await service.GetProviderByIdAsync(providerId);
 
-            return View(Provider);
-        }
+            ViewBag.Groups = await groupService.GetAllGroupsAsync();
+            ViewBag.ProviderTypes = await service.GetAllProvidersAsync();
+            ViewBag.Providers = await service.GetAllProvidersAsync();
+
+            return View(provider);
+        } 
 
         [HttpGet]
         public async Task<IActionResult> CreateProvider()
@@ -48,25 +52,25 @@ namespace Test.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateProvider(ProviderRequestModel requestModel)
         {
-            ResponseModel<ProviderResponseModel> Provider = await service.CreateProviderAsync(requestModel);
+            ResponseModel<ProviderResponseModel> provider = await service.CreateProviderAsync(requestModel);
 
-            return View(Provider);
+            return Ok();
         }
 
-        [HttpPut]
+        [HttpPost]
         public async Task<IActionResult> UpdateProvider(ProviderUpdateModel updateModel)
         {
-            ResponseModel<ProviderResponseModel> Providers = await service.UpdateProviderAsync(updateModel);
+            ResponseModel<ProviderResponseModel> providers = await service.UpdateProviderAsync(updateModel);
 
-            return View(Providers);
+            return Ok();
         }
 
         [HttpDelete]
         public async Task<IActionResult> DeleteProvider(int providerId)
         {
-            ResponseModel<bool> Providers = await service.DeleteProviderAsync(providerId);
+            ResponseModel<bool> providers = await service.DeleteProviderAsync(providerId);
 
-            return View(Providers);
+            return Ok();
         }
         #endregion
 
@@ -74,34 +78,34 @@ namespace Test.Controllers
         [HttpGet]
         public async Task<IActionResult> GetProviderTypes()
         {
-            ResponseModel<IList<ProviderTypeResponseModel>> ProviderTypes = await service.GetAllProviderTypesAsync();
+            ResponseModel<IList<ProviderTypeResponseModel>> providerTypes = await service.GetAllProviderTypesAsync();
 
-            return View(ProviderTypes);
+            return View(providerTypes);
         }
 
         [HttpGet]
         public async Task<IActionResult> GetProviderType(int ProviderTypeId)
         {
-            ResponseModel<ProviderTypeResponseModel> ProviderType = await service.GetProviderTypeByIdAsync(ProviderTypeId);
-            ViewBag.ProviderType = ProviderType;
+            ResponseModel<ProviderTypeResponseModel> providerType = await service.GetProviderTypeByIdAsync(ProviderTypeId);
+            ViewBag.ProviderType = providerType;
 
-            ResponseModel<IList<ProviderTypeResponseModel>> ProviderTypes = await service.GetAllProviderTypesAsync();
+            ResponseModel<IList<ProviderTypeResponseModel>> providerTypes = await service.GetAllProviderTypesAsync();
 
-            return View(ProviderTypes);
+            return View(providerTypes);
         }
 
         [HttpGet]
         public async Task<IActionResult> CreateProviderType()
         {
-            ResponseModel<IList<ProviderTypeResponseModel>> ProviderType = await service.GetAllProviderTypesAsync();
+            ResponseModel<IList<ProviderTypeResponseModel>> providerType = await service.GetAllProviderTypesAsync();
 
-            return View(ProviderType);
+            return View(providerType);
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateProviderType(ProviderTypeRequestModel requestModel)
         {
-            ResponseModel<ProviderTypeResponseModel> ProviderType = await service.CreateProviderTypeAsync(requestModel);
+            ResponseModel<ProviderTypeResponseModel> providerType = await service.CreateProviderTypeAsync(requestModel);
 
             return View();
         }
@@ -109,17 +113,17 @@ namespace Test.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateProviderType(ProviderTypeUpdateModel updateModel)
         {
-            ResponseModel<ProviderTypeResponseModel> ProviderTypes = await service.UpdateProviderTypeAsync(updateModel);
+            ResponseModel<ProviderTypeResponseModel> providerTypes = await service.UpdateProviderTypeAsync(updateModel);
 
-            return Ok(ProviderTypes);
+            return Ok(providerTypes);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> DeleteProviderType(int ProviderTypeId)
+        [HttpDelete]
+        public async Task<IActionResult> DeleteProviderType(int providerTypeId)
         {
-            ResponseModel<bool> ProviderTypes = await service.DeleteProviderTypeAsync(ProviderTypeId);
+            ResponseModel<bool> providerTypes = await service.DeleteProviderTypeAsync(providerTypeId);
 
-            return Ok(); 
+            return Ok(providerTypes); 
         }
         #endregion
     }

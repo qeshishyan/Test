@@ -229,7 +229,8 @@ namespace Test.DAL.Repository
             {
                 Groups Group = new Groups
                 {
-                    Name = requestModel.Name
+                    Name = requestModel.Name,
+                    GroupTypeId = requestModel.GroupTypeId
                 };
 
                 await dbContext.Groups.AddAsync(Group);
@@ -305,7 +306,12 @@ namespace Test.DAL.Repository
                       .Select(x => new GroupResponseModel
                       {
                           Id = x.Id,
-                          Name = x.Name
+                          Name = x.Name,
+                          GroupType = new GroupTypeResponseModel
+                          {
+                              Id = x.GroupTypes.Id,
+                              Name = x.GroupTypes.Name
+                          }
 
                       }).FirstOrDefaultAsync();
 
@@ -383,7 +389,8 @@ namespace Test.DAL.Repository
                 Groups Group = new Groups
                 {
                     Name = updateModel.Name,
-                    Id = updateModel.Id
+                    Id = updateModel.Id,
+                    GroupTypeId = updateModel.GroupTypeId
                 };
 
                 dbContext.Groups.Update(Group);
